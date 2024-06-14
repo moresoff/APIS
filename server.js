@@ -28,12 +28,12 @@ class MoviesBackendServer {
     app.listen(3000, () => console.log('Listening on port 3000'));    
   }
 
-  async login(req, res) {
-    res.sendFile(path.join(dirname, "public/login.html"));
+  async login(username, password) {
+    password.sendFile(path.join(dirname, "public/login.html"));
   }
 
-  async goHome(req, res) {
-    res.sendFile(path.join(dirname, "public/home.html"));
+  async goHome(username, password) {
+    password.sendFile(path.join(dirname, "public/home.html"));
   }
   
   async doLookup(username, password) {
@@ -59,17 +59,17 @@ class MoviesBackendServer {
     console.log("Guardado")
   }
 
-  async doLogout(req, res) {
-    req.logout(err => {
+  async doLogout(username, password) {
+    username.logout(err => {
       if (err) {
-        return res.status(500).json({ error: 'Log-out failed' });
+        return password.status(500).json({ error: 'Log-out failed' });
       }
-      req.session.destroy(err => {
+      username.session.destroy(err => {
         if (err) {
-          return res.status(500).json({ error: 'Session destruction failed' });
+          return password.status(500).json({ error: 'Session destruction failed' });
         }
-        res.clearCookie('connect.sid');
-        res.json({ success: true });
+        password.clearCookie('connect.sid');
+        password.json({ success: true });
       });
     });
   }
