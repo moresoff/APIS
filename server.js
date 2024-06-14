@@ -7,7 +7,6 @@ import path from 'path';
 import CryptoJS from 'crypto-js'; 
 import Bcrypt from 'bcrypt';
 
-
 const dirname = fs.realpathSync('.');
 
 class MoviesBackendServer {
@@ -20,8 +19,6 @@ class MoviesBackendServer {
     app.use(express.urlencoded({extended: false}));
     const authentication = new Authentication(app);
     
-   
-  
     app.get('/login/', this.login);
     app.post('/login/', passport.authenticate('local', {failureRedirect: '/login'}));
     app.get('/lookup/:user', authentication.checkAuthenticated, this.doLookup);
@@ -40,8 +37,8 @@ class MoviesBackendServer {
     res.sendFile(path.join(dirname, "public/home.html"));
   }
   
-  async doLookup(username, password) {
-    const user = username.params.username.toLowerCase();
+  async doLookup(req, res) { //tuve que cambiar el username y password a req y res 
+    const user = req.params.username.toLowerCase();
     const query = { username: user };
     const collection = db.collection("users");
     await collection.findOne(query);
@@ -49,42 +46,40 @@ class MoviesBackendServer {
       username: user,
       password: password
     };
-    password.json(response);
+    res.json(response);
     console.log("Guardado")
   }
   async doNew(username, password) {
     const encryptedUsername = username.body.username;
     const encryptedPassword = password.body.password; //ME MARCA ERROR EN EL SEGUNDO PASSWORD 
-    const key = "CINEMAX - API"; //CONTRASEÑA
-    //SOLO MUESTRA 
+    const key = "CINEMAX - API";
     console.log("Este es el username encriptado que recibio el server: " + username.body.username);
     console.log("Este es el password encriptado que recibio el server: " + username.body.password);
-   
+
+    // Desencriptando el nombre de usuario y la contraseña recibidos
     const registroUsername = CryptoJS.AES.decrypt(encryptedUsername, key).toString(CryptoJS.enc.Utf8);
     const registroPassword = CryptoJS.AES.decrypt(encryptedPassword, key).toString(CryptoJS.enc.Utf8);
-    // mostaemos como se ve username y password una vez desencriptado
 
-    console.log("Este es el username luego de la desencriptacion: " + registroUsername);
-    console.log("Este es el password luego de la desencriptacion: " + registroPassword);
-  // hasheamos la contraseña antes de guardarla en la base de datos
-//PARTE DE LA LIBRERIA DE BCRYPT
-      const saltRounds = 10;
-      const salt = await Bcrypt.genSalt(saltRounds);
-      const hashedRegisterPassword = await Bcrypt.hash(registroPassword, salt);
-  
-      // Crear la consulta y actualizar o insertar el usuario
+    // Registrando el nombre de usuario y la contraseña desencriptados
+    console.log("Este es el username luego de la desencriptación: " + registroUsername);
+    console.log("Este es el password luego de la desencriptación: " + registroPassword);
+
+    // Hasheando la contraseña antes de guardarla en la base de datos
+    //parte del bcrypt
+    const saltRounds = 10;
+    const salt = await Bcrypt.genSalt(saltRounds);
+    const hashedRegisterPassword = await Bcrypt.hash(registroPassword, salt);
+
+    // Creando la consulta y actualizando o insertando el usuario
     const query = { username: registroUsername };
     const update = { $set: { password: hashedRegisterPassword } };
     const params = { upsert: true };
     const collection = db.collection('users');
     await collection.updateOne(query, update, params);
 
-    
-    password.json({ success: true });
-    console.log("guardado");
+    res.json({ success: true }); // Corregido aquí
+    console.log("Guardado");
   }
-
-  
 
   async doLogout(req, res) {
     req.logout(err => {
@@ -102,8 +97,5 @@ class MoviesBackendServer {
   }
 
 }
- 
-  
-
 
 new MoviesBackendServer();
