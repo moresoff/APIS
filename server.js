@@ -18,7 +18,8 @@ class MoviesBackendServer {
 
     app.use(express.urlencoded({extended: false}));
     const authentication = new Authentication(app);
-    
+
+    app.get('/loadMovies', authentication.checkAuthenticated, this.LoadMovies)
     app.get('/login/', this.login);
     app.post('/login/', passport.authenticate('local', {failureRedirect: '/login'}));
     app.get('/lookup/:user', authentication.checkAuthenticated, this.doLookup);
@@ -97,7 +98,17 @@ class MoviesBackendServer {
       });
     });
   }
+async LoadMovies(req,res) {
+  const JSON_PATH = 'https://www.mockachino.com/3aa23347-acfb-4e/movies';
+  try {
+      const response = await fetch(JSON_PATH); // obtener informacion
+      const api = await response.json();
+      res.json(api); 
 
+  } catch (error) {
+      console.error('Error fetching data:', error);
+  }   
+}
 }
 
 new MoviesBackendServer();

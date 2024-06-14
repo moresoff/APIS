@@ -1,7 +1,6 @@
 import Images from './images.js';
 import MovieDetails from './moviedetails.js';
 
-const JSON_PATH = 'https://www.mockachino.com/3aa23347-acfb-4e/movies';
 
 class App {
   constructor() {
@@ -66,10 +65,10 @@ class App {
   }
 
   loadMovies() {
-    fetch(JSON_PATH)
+    fetch('/loadMovies')
       .then(response => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Datos');
         }
         return response.json();
       })
