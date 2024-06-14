@@ -102,16 +102,7 @@ class MoviesBackendServer {
   }
 
 }
-  //ESTO LO TENGO QUE HACER PARA REGISTRO
- // async doRegistrer(username, password) {
-   // const newUser = username.body.user.toLowerCase(); 
-    //const query = { nuevouser: nuevouser }; //tres paramentros que updateone necesita 
-    //const update = { $set: { users: user.body.user } };//tres paramentros que updateone necesita //que es lo que tiene que updatear 
-    //const params = { upsert: true };//tres paramentros que updateone necesita, si no la encuentra que la crea
-    //const collection = db.collection("users");
-    //await collection.updateOne(query, update, params); //updateOne es para guardar una palabra en mongo DB
-    //res.json({ success: true });
-  //}
+ 
   
 
 

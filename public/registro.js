@@ -7,6 +7,7 @@ class Registro {
 
   doRegistro(event) {
       event.preventDefault();
+      const key = "CINEMAX - API";
       const users = document.querySelector("#username").value;
       const password = document.querySelector("#password").value;
       const encryptedUsers = CryptoJS.AES.encrypt(users, key).toString();
