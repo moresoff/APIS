@@ -8,7 +8,7 @@ class App {
     this._onAscClick = this._onAscClick.bind(this);
     this._onDescClick = this._onDescClick.bind(this);
     this._onAlphaClick = this._onAlphaClick.bind(this);
-
+    this._onCerrar = this._onCerrarClick.bind (this);
     document.addEventListener('DOMContentLoaded', () => {
       const ascButton = document.querySelector("#asc");
       ascButton.addEventListener("click", this._onAscClick);
@@ -18,8 +18,22 @@ class App {
       alphaButton.addEventListener("click", this._onAlphaClick);
       this.loadMovies();
     });
+    const loginCerrar = document.querySelector('#logincerrar');
+    loginCerrar.addEventListener('click', this._onCerrarClick);
   }
 
+  _onCerrarClick(){
+    fetch('logout/')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Datos');
+        }
+        return fetch('/login', fetchOptions)
+          .then(user =>   window.location.href = '/');
+      })
+   
+  }
+  
   _onAscClick() {
     this.moviesList.forEach(pelicula => {
       pelicula.duracionNumero = parseInt(pelicula.duration.replace(' min', '')); 

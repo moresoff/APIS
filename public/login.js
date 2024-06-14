@@ -3,6 +3,7 @@ class Login {
     const loginForm = document.querySelector('#login-form');
     this.doLogin = this.doLogin.bind(this);
     loginForm.addEventListener('submit', this.doLogin);
+    
   }
 
   doLogin(event) {
