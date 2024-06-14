@@ -2,6 +2,9 @@ import passport from 'passport'; //autentificacion
 import LocalStrategy from 'passport-local';
 import session from 'express-session';
 import db from './db.js'
+import CryptoJS from 'crypto-js'; 
+import Bcrypt from 'bcrypt';
+
 
 class Authentication {
     constructor(app) {
@@ -18,9 +21,11 @@ class Authentication {
         passport.serializeUser((user, done) => done(null, user));
         passport.deserializeUser((user, done) => done(null, user));
     }
-    async verifyIdentity(username, password,done ) { //mismo nombre que en el back 
-
-        const query = { username: username }; //defino como username lo que tengo en mi db username 
+    async verifyIdentity(username, password, done ) { //mismo nombre que en el back 
+        const key = "CINEMAX - API";
+        const user = CryptoJS.AES.decrypt(username, key).toString(CryptoJS.enc.Utf8);
+        const pass = CryptoJS.AES.decrypt(password, key).toString(CryptoJS.enc.Utf8);
+        const query = { username: user}; //defino como username lo que tengo en mi db username 
         const collection = db.collection("users"); //selecciono la etiqueta de mi db 
         const usernameFromDB = await collection.findOne(query); //busca y lo que busca lo guarda en el query y vuelve 
         if (!usernameFromDB) {
@@ -30,7 +35,8 @@ class Authentication {
 
     
         // Compare the password entered by the user with the password stored in the database.
-        if (usernameFromDB.password !== password) {
+        const isMatch = await Bcrypt.compare(pass, usernameFromDB.password);
+        if (!isMatch) {
             return done(new Error('Invalid password'));
         }
 

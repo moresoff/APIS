@@ -9,6 +9,8 @@ class Login {
       event.preventDefault();
       const users = document.querySelector("#username").value;
       const password = document.querySelector("#password").value;
+      const key = "CINEMAX - API"; //Clave privada de encriptacion
+      const encryptedData = CryptoJS.AES.encrypt(data, key).toString() //encripta la clave antes de transmitirlo
       const loginBody = {
           username: users, 
           password: password

@@ -9,9 +9,11 @@ class Registro {
       event.preventDefault();
       const users = document.querySelector("#username").value;
       const password = document.querySelector("#password").value;
+      const encryptedUsers = CryptoJS.AES.encrypt(users, key).toString();
+      const encryptedPassword = CryptoJS.AES.encrypt(password, key).toString();
       const registroBody = {
-          username: users, 
-          password: password
+          username: encryptedUsers, 
+          password: encryptedPassword,
       };
       const fetchOptions = {
          method: 'POST',
