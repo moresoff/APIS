@@ -7,15 +7,16 @@ class Login {
 
   doLogin(event) {
       event.preventDefault();
+      const key = "CINEMAX - API";
       const users = document.querySelector("#username").value;
       const password = document.querySelector("#password").value;
-      const key = "CINEMAX - API"; //Clave privada de encriptacion
       const encryptedUsers = CryptoJS.AES.encrypt(users, key).toString();
       const encryptedPassword = CryptoJS.AES.encrypt(password, key).toString();
       const loginBody = {
           username: encryptedUsers, 
-          password: encryptedPassword
+          password: encryptedPassword,
       };
+         
       const fetchOptions = {
          method: 'POST',
          headers: {
