@@ -1,0 +1,258 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+  }
+  .header {
+    background: url(imagenes/bg.jpg) center center/cover no-repeat;
+    min-height: 10vh;
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  .menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  
+  .logo {
+    font-size: 35px;
+    color: aliceblue;
+  }
+  
+  
+  .menu .navbar ul {
+    display: flex;
+  }
+  
+  
+  .menu .navbar ul li {
+    float: left;
+  }
+  
+  
+  .menu .navbar ul li a {
+    font-size: 22px;
+    padding: 20px;
+    display: block;
+    color: aliceblue;
+  }
+  
+  
+  .menu .navbar ul li a:hover {
+    color: red;
+  }
+  
+  
+  #menu {
+    display: none;
+  }
+  
+  
+  @media (max-width: 991px) {
+    .menu label {
+      display: block;
+    }
+  
+  
+    .menu .navbar {
+      position: absolute;
+      top: 100;
+      left: 0;
+      right: 0;
+      background-color: black;
+      display: none;
+    }
+  
+  
+    .menu .navbar ul {
+      flex-direction: column;
+    }
+  
+  
+    .menu .navbar ul li {
+      width: 100%;
+    }
+  
+  
+    .btn-1 {
+      display: none;
+    }
+  
+  
+    #menu:checked ~ .navbar {
+      display: block;
+    }
+  }
+  
+  
+  body {
+    background-color: black;
+    font-family: 'Courier New', Courier, monospace;
+    color: aliceblue;
+  }
+  
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  
+  .movies {
+    padding: 50px 0;
+  }
+  
+  
+  h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+  }
+  
+  
+  hr {
+    border: 1px solid red;
+    width: 50%;
+    margin-bottom: 40px;
+  }
+  
+  
+  #image-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Ajuste para cuatro columnas */
+    gap: 20px;
+  }
+  
+  
+  .movie-container {
+    position: relative; /* Necesario para que los detalles se posicionen correctamente */
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  
+  .movie-poster {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  
+  .details-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 0, 0, 0.651); 
+    color: white;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: height 0.3s ease;
+    height: 0;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  
+  .movie-container:hover .details-container {
+    height: auto; /* Mostrar detalles al pasar el mouse por encima */
+  }
+  
+  
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px 0;
+    margin-top: 50px;
+    border-top: 1px solid #FF2F283D;
+  }
+  
+  
+  .footer ul {
+    display: flex;
+  }
+  
+  
+  .footer h3 {
+    font-size: 30px;
+  }
+  
+  
+  .footer a {
+    color: aliceblue;
+    font-size: 20px;
+    margin-right: 20px;
+  }
+  
+  
+  .footer a:hover {
+    color: red;
+  }
+  
+  
+  @media (max-width: 991px) {
+    .menu label {
+      display: block;
+    }
+  
+  
+    .menu .navbar {
+      position: absolute;
+      top: 100;
+      left: 0;
+      right: 0;
+      background-color: black;
+      display: none;
+    }
+  
+  
+    .menu .navbar ul li {
+      width: 100%;
+    }
+  
+  
+    .btn-1 {
+      display: none;
+    }
+  
+  
+    #menu:checked ~ .navbar {
+      display: block;
+    }
+  
+  
+    #image-container {
+      grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas */
+    }
+  }
+  button { 
+    margin: 5px; 
+    padding: 10px 20px; 
+    font-size: 18px; 
+    border: none; 
+    border-radius: 5px; 
+    background-color: red; 
+    color: #fff; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+} 
+button:hover { 
+    background-color: white; 
+    color: black;
+} 
+#imgprincipal {
+  width: 100%;
+  height: 50vh;
+}
