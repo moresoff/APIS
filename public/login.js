@@ -28,7 +28,7 @@ class Login {
       
       console.log(loginBody);
       
-      return fetch('/login/', fetchOptions)
+      return fetch('/login', fetchOptions)
           .then(user =>   window.location.href = '/');
   }
 }

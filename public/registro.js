@@ -27,7 +27,7 @@ class Registro {
       
       console.log("registroBody");
    
-      return fetch('/registro', fetchOptions)
+      return fetch('/registro/', fetchOptions)
           .then(user =>   window.location.href = '/');
   }
 }

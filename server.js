@@ -38,23 +38,25 @@ class MoviesBackendServer {
   }
   
   async doLookup(req, res) { //tuve que cambiar el username y password a req y res 
-    const user = req.params.username.toLowerCase();
+    const user = req.params.user.toLowerCase();
     const query = { username: user };
     const collection = db.collection("users");
-    await collection.findOne(query);
-    const response = {
-      username: user,
-      password: password
-    };
-    res.json(response);
-    console.log("Guardado")
+    const userDoc = await collection.findOne(query);
+    if (userDoc) {
+      res.json({ username: userDoc.username });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
   }
-  async doNew(username, password) {
-    const encryptedUsername = username.body.username;
-    const encryptedPassword = password.body.password; //ME MARCA ERROR EN EL SEGUNDO PASSWORD 
-    const key = "CINEMAX - API";
-    console.log("Este es el username encriptado que recibio el server: " + username.body.username);
-    console.log("Este es el password encriptado que recibio el server: " + username.body.password);
+
+  async doNew(req, res) { //tuve que cambiar el username y password a req y res 
+    const encryptedUsername = req.body.username;
+    const encryptedPassword = req.body.password; 
+    const key = "CINEMAX - API"; // Clave privada 
+    
+    // Registrando el nombre de usuario y la contraseña encriptados recibidos
+    console.log("Este es el username encriptado que recibió el servidor: " + encryptedUsername);
+    console.log("Este es el password encriptado que recibió el servidor: " + encryptedPassword);
 
     // Desencriptando el nombre de usuario y la contraseña recibidos
     const registroUsername = CryptoJS.AES.decrypt(encryptedUsername, key).toString(CryptoJS.enc.Utf8);
