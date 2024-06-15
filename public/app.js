@@ -22,7 +22,7 @@ class App {
     loginCerrar.addEventListener('click', this._onCerrarClick);
   }
 
-  _onCerrarClick(){
+ /* _onCerrarClick(){
     fetch('logout/')
       .then(response => {
         if (!response.ok) {
@@ -32,7 +32,7 @@ class App {
           .then(user =>   window.location.href = '/');
       })
    
-  }
+  }*/
   
   _onAscClick() {
     this.moviesList.forEach(pelicula => {
