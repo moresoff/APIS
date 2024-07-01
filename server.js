@@ -25,8 +25,9 @@ class MoviesBackendServer {
     app.get('/lookup/:user', authentication.checkAuthenticated, this.doLookup);
     app.post('/registro' , this.doNew)
     app.get('/', authentication.checkAuthenticated, this.goHome);
-   /* app.get('/logout/', authentication.checkAuthenticated, this.doLogout);*/
-    
+    app.get('/logout/', authentication.checkAuthenticated, this.doLogout);
+
+
     app.listen(3000, () => console.log('Listening on port 3000'));    
   }
 
@@ -84,7 +85,7 @@ class MoviesBackendServer {
     console.log("Guardado");
   }
 
-  /*async doLogout(req, res) {
+  async doLogout(req, res) {
     req.logout(err => {
       if (err) {
         return res.status(500).json({ error: 'Log-out failed' });
@@ -97,7 +98,8 @@ class MoviesBackendServer {
         res.json({ success: true });
       });
     });
-  }*/
+  }
+
 async LoadMovies(req,res) {
   const JSON_PATH = 'https://www.mockachino.com/3aa23347-acfb-4e/movies';
   try {
