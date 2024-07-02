@@ -19,13 +19,19 @@ class MoviesBackendServer {
     app.use(express.urlencoded({extended: false}));
     const authentication = new Authentication(app);
 
-    app.get('/loadMovies', authentication.checkAuthenticated, this.LoadMovies)
+    app.get('/loadMovies', authentication.checkAuthenticated, this.LoadMovies.bind(this));
     app.get('/login/', this.login);
-    app.post('/login/', passport.authenticate('local', {failureRedirect: '/login'}));
-    app.get('/lookup/:user', authentication.checkAuthenticated, this.doLookup);
-    app.post('/registro' , this.doNew)
-    app.get('/', authentication.checkAuthenticated, this.goHome);
-    app.get('/logout/', authentication.checkAuthenticated, this.doLogout);
+    app.post('/login/', passport.authenticate('local', { failureRedirect: '/login' }));
+    app.get('/lookup/:user', authentication.checkAuthenticated, this.doLookup.bind(this));
+    app.post('/registro', this.doNew.bind(this));
+    app.get('/', authentication.checkAuthenticated, this.goHome.bind(this));
+    app.get('/logout/', authentication.checkAuthenticated, this.doLogout.bind(this));
+    app.get('/loadCines', authentication.checkAuthenticated, this.LoadCines.bind(this));
+    app.post('/comments', authentication.checkAuthenticated, this.saveComment.bind(this));
+    app.get('/comments', authentication.checkAuthenticated, this.showComments.bind(this));
+    app.post('/comentario', authentication.checkAuthenticated, this.saveComentario.bind(this));
+    app.get('/comentario', authentication.checkAuthenticated, this.showComentario.bind(this));
+
 
 
     app.listen(3000, () => console.log('Listening on port 3000'));    
@@ -100,16 +106,85 @@ class MoviesBackendServer {
     });
   }
 
-async LoadMovies(req,res) {
-  const JSON_PATH = 'https://www.mockachino.com/3aa23347-acfb-4e/movies';
-  try {
-      const response = await fetch(JSON_PATH); // obtener informacion
+  async LoadMovies(req, res) {
+    const JSON_PATH = 'https://www.mockachino.com/3aa23347-acfb-4e/movies';
+    try {
+      const response = await fetch(JSON_PATH);
       const api = await response.json();
-      res.json(api); 
+      res.json(api);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 
-  } catch (error) {
-      console.error('Error fetching data:', error);
-  }   
+  async LoadCines(req, res) {
+    const API_URL = 'https://www.mockachino.com/8113743e-f0f9-4d/cines';
+    try {
+      const response = await fetch(API_URL);
+      const api = await response.json();
+      res.json(api);
+    } catch (error) {
+      console.error('Error fetching cinemas:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+ //comentarios de cine
+  async saveComment(req, res) {
+    const { cine, comentario } = req.body;
+    const username = req.user.username;
+
+    const collection = db.collection('comments');
+
+    try {
+      await collection.insertOne({ username, cine, comentario });
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error saving comment:', error);
+      res.status(500).json({ error: 'Error saving comment to database' });
+    }
+  }
+
+  async showComments(req, res) {
+    const collection = db.collection('comments');
+
+    try {
+      const comments = await collection.find().toArray();
+      res.json(comments);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      res.status(500).json({ error: 'Error fetching comments from database' });
+    }
+  }
+
+  // comentarios de peliculas 
+  async saveComentario(req, res) {
+    if (!req.isAuthenticated() || !req.user) {
+        return res.status(401).json({ error: 'No está autenticado' });
+    }
+    const { pelicula, comment } = req.body;
+    const username = req.user.username;
+    
+    const collection = db.collection('comentario');
+    
+    try {
+        await collection.insertOne({ username, pelicula, comment });
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error al guardar el comentario:', error);
+        res.status(500).json({ error: 'Error al guardar el comentario en la base de datos' });
+    }
+}
+
+async showComentario(req, res) {
+    const collection = db.collection('comentario');
+    try {
+        const comentario = await collection.find().toArray();
+        res.json(comentario);
+    } catch (error) {
+        console.error('Error al obtener los comentarios:', error);
+        res.status(500).json({ error: 'Error al obtener los comentarios de la base de datos' });
+    }
 }
 }
 

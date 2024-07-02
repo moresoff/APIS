@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cine</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <header class="header">
+    <div class="menu container">
+      <a href="#" class="logo">cinemax</a>
+      <input type="checkbox" id="menu" />
+      <label for="menu"></label>
+      <nav class="navbar">
+        <ul>
+          <li><a href="home.html">Peliculas</a></li>
+          <li><a href="cines.html">Cines</a></li>
+          <li><a href="/login" class="btn-1">Login</a></li>
+          <li><button id="logoutBtn" class="logoutBtn">Cerrar</button> </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div>
+    <img src="https://wallpaperaccess.com/full/3302938.jpg" id="imgprincipal" alt="Cine">
+  </div>
+<div id="cine-container"></div>
+
+  <form id="comentario-form">
+    <label for="cine-input">Nombre del cine:</label>
+    <input type="text" id="cine-input" name="cine">
+
+    <label for="comentario-input">Comentario:</label>
+    <input type="text" id="comentario-input" name="comentario">
+
+    <button type="submit">Enviar comentario</button>
+  </form>
+
+  <div id="comments-container"></div>
+
+</body> 
+ <footer class="footer container">
+    <h3>Cinemax</h3>
+    <ul>
+      <li><a href="home.html">Peliculas</a></li>
+      <li><a href="cines.html">Cines</a></li>
+    </ul>
+  </footer>
+<script src="Cine.js" type="module"></script>
+</html>

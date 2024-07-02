@@ -23,7 +23,8 @@ class Authentication {
     }
     async verifyIdentity(username, password, done ) { //mismo nombre que en el back 
         const key = "CINEMAX - API";
-        const user = CryptoJS.AES.decrypt(username, key).toString(CryptoJS.enc.Utf8);
+        const user = CryptoJS.AES.decrypt(username, key).toString(CryptoJS.enc.Utf8); /*Desencriptación AES luego 
+        de recibir los datos*/
         const pass = CryptoJS.AES.decrypt(password, key).toString(CryptoJS.enc.Utf8);
         const query = { username: user}; //defino como username lo que tengo en mi db username 
         const collection = db.collection("users"); //selecciono la etiqueta de mi db 
@@ -35,7 +36,8 @@ class Authentication {
 
     
         // Compare the password entered by the user with the password stored in the database.
-        const isMatch = await Bcrypt.compare(pass, usernameFromDB.password);
+        const isMatch = await Bcrypt.compare(pass, usernameFromDB.password); /*Compara el password en plain text
+        recién desencriptado con el password hasheado guardado en la base de datos*/
         if (!isMatch) {
             return done(new Error('Invalid password'));
         }
